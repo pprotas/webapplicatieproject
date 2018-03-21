@@ -1,0 +1,86 @@
+﻿@{
+    Page.Title = "Sorting Quiz";
+    Layout = "~/Shared/_SiteLayout.cshtml";
+
+    if (IsPost)
+    {
+        Validation.RequireField("group1", "You have to answer this question");
+        Validation.RequireField("group2", "You have to answer this question");
+        Validation.RequireField("group3", "You have to answer this question");
+        Validation.RequireField("group4", "You have to answer this question");
+        Validation.RequireField("group5", "You have to answer this question");
+    }
+}
+<div class="row">
+    <div class="center">
+        <h4>Meet the houses</h4>
+        <hr class="col s8 offset-s2 m6 offset-m3 l2 offset-l5" />
+    </div>
+</div>
+
+@*Cards met informatie over de Houses*@
+<div class="row">
+    @*Gryffindor*@
+    <div class="col s6 m4 offset-m2 card">
+        <div class="card-image waves-effect waves-block waves-light">
+            <img class="activator" src="~/Images/Gryffindor.png">
+        </div>
+        <div class="center">
+            <span class="card-title activator grey-text text-darken-4">Gryffindor</span>
+        </div>
+        <div class="card-reveal">
+            <span class="card-title grey-text text-darken-4">Gryffindor<i class="material-icons right">close</i></span>
+            <p>Here is some more information about this product that is only revealed once clicked on.</p>
+        </div>
+    </div>
+    @*Slytherin*@
+    <div class="col s6 m4 card">
+        <div class="card-image waves-effect waves-block waves-light">
+            <img class="activator" src="~/Images/Slytherin.png">
+        </div>
+        <div class="center">
+            <span class="card-title activator grey-text text-darken-4">Slytherin</span>
+        </div>
+        <div class="card-reveal">
+            <span class="card-title grey-text text-darken-4">Slytherin<i class="material-icons right">close</i></span>
+            <p>Here is some more information about this product that is only revealed once clicked on.</p>
+        </div>
+    </div>
+    @*Hufflepuff*@
+    <div class="col s6 m4 offset-m2 card">
+        <div class="card-image waves-effect waves-block waves-light">
+            <img class="activator" src="~/Images/Hufflepuff.png">
+        </div>
+        <div class="center">
+            <span class="card-title activator grey-text text-darken-4">Hufflepuff</span>
+        </div>
+        <div class="card-reveal">
+            <span class="card-title grey-text text-darken-4">Hufflepuff<i class="material-icons right">close</i></span>
+            <p>Here is some more information about this product that is only revealed once clicked on.</p>
+        </div>
+    </div>
+    @*Ravenclaw*@
+    <div class="col s6 m4 card">
+        <div class="card-image waves-effect waves-block waves-light">
+            <img class="activator" src="~/Images/Ravenclaw.png">
+        </div>
+        <div class="center">
+            <span class="card-title activator grey-text text-darken-4">Ravenclaw</span>
+        </div>
+        <div class="card-reveal">
+            <span class="card-title grey-text text-darken-4">Ravenclaw<i class="material-icons right">close</i></span>
+            <p>Here is some more information about this product that is only revealed once clicked on.</p>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <form class="col offset-m2" method="post">
+        @RenderPage("~/Vragen/_Vraag1.cshtml")
+        @RenderPage("~/Vragen/_Vraag2.cshtml")
+        @RenderPage("~/Vragen/_Vraag3.cshtml")
+        @RenderPage("~/Vragen/_Vraag4.cshtml")
+        @RenderPage("~/Vragen/_Vraag5.cshtml")
+        <button class="btn waves-effect" type="submit">Sort!</button>
+    </form>
+</div>
