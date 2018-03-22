@@ -4,14 +4,40 @@
 
 <nav class="white" role="navigation">
     <div class="nav-wrapper container">
-        <a id="logo-container" href="#" class="brand-logo">DumbleMore</a>
-        <ul class="right hide-on-med-and-down">
-            <li><a href="#">Navbar Link</a></li>
-        </ul>
+        <a id="logo-container" href="~/Home" class="brand-logo">DumbleMore</a>
+        @if (WebSecurity.IsAuthenticated)
+        {
+            <div class="black-text right hide-on-med-and-down">
+                <text class="light">
+                    Welkom, <a class="black-text" href="~/Manage">@WebSecurity.CurrentUserName</a>
+                </text>
+                <text>
+                    <a class="black-text" href="javascript:document.getElementById('logoutForm').submit()">Log out</a>
+                </text>
+            </div>
+            <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+            <ul id="nav-mobile" class="side-nav">
+                <li><text class="light black-text">Welkom, @WebSecurity.CurrentUserName</text></li>
+                <li><a href="javascript:document.getElementById('logoutForm').submit()">Log out</a></li>
+            </ul>
+            <form id="logoutForm" action="~/Logout" method="post">
+                @AntiForgery.GetHtml()
+            </form>
+        }
+        else
+        {
+            <ul class="right hide-on-med-and-down">
+                <li><a href="~/Login" class="btn">Log In</a></li>
+                <li><a href="~/Register" class="btn">Registreer</a></li>
+            </ul>
+            <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+            <ul id="nav-mobile" class="side-nav">
+                <li><a href="~/Login" class="btn">Log In</a></li>
+                <li><a href="~/Register" class="btn">Registreer</a></li>
+            </ul>
 
-        <ul id="nav-mobile" class="side-nav">
-            <li><a href="#">Navbar Link</a></li>
-        </ul>
-        <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+        }
+
+
     </div>
 </nav>
