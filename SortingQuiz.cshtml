@@ -1,39 +1,6 @@
 ﻿@{
     Page.Title = "Sorting Quiz";
     Layout = "~/Shared/_SiteLayout.cshtml";
-
-    if (IsPost)
-    {
-        Validation.RequireField("group1", "You have to answer this question");
-        Validation.RequireField("group2", "You have to answer this question");
-        Validation.RequireField("group3", "You have to answer this question");
-        Validation.RequireField("group4", "You have to answer this question");
-        Validation.RequireField("group5", "You have to answer this question");
-    }
-
-    if (IsPost && Validation.IsValid())
-    {
-        int griffPoints = 0;
-        int slythPoints = 0;
-        int huffPoints = 0;
-        int ravenPoints = 0;
-
-        switch (Request.Form["group1"])
-        {
-            case "a":
-                griffPoints++;
-                break;
-            case "b":
-                slythPoints++;
-                break;
-            case "c":
-                huffPoints++;
-                break;
-            case "d":
-                ravenPoints++;
-                break;
-        }
-    }
 }
 <div class="row">
     <div class="center">
@@ -106,7 +73,7 @@
 </div>
 
 <div class="row">
-    <form class="col offset-m2" method="post">
+    <form class="col offset-m2" method="post" action="~/SortingResult.cshtml">
         @RenderPage("~/Vragen/_Vraag1.cshtml")
         @RenderPage("~/Vragen/_Vraag2.cshtml")
         @RenderPage("~/Vragen/_Vraag3.cshtml")
