@@ -35,7 +35,6 @@
         password = Request.Form["password"];
         confirmPassword = Request.Form["confirm_password"];
 
-        int i = 0;
         // Validate the user's captcha answer
         // if (!ReCaptcha.Validate("PRIVATE_KEY")) {
         //     ModelState.AddError("recaptcha", "Captcha response was not correct");
@@ -82,7 +81,7 @@
                         // Navigate back to the homepage and exit
                         WebSecurity.Login(userName, password);
 
-                        Response.Redirect("~/Home");
+                        Response.Redirect("~/SortingQuiz");
                     }
                 }
                 catch (System.Web.Security.MembershipCreateUserException e)

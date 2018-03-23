@@ -1,6 +1,115 @@
 ﻿@{
     Page.Title = "Sorting Quiz";
     Layout = "~/Shared/_SiteLayout.cshtml";
+
+    string userHouse = "";
+
+    Database db = Database.Open("StarterSite");
+
+    if (IsPost)
+    {
+        Validation.RequireField("group1", "You have to answer this question");
+        Validation.RequireField("group2", "You have to answer this question");
+        Validation.RequireField("group3", "You have to answer this question");
+        Validation.RequireField("group4", "You have to answer this question");
+        Validation.RequireField("group5", "You have to answer this question");
+    }
+
+    if (IsPost && Validation.IsValid())
+    {
+        int griffPoints = 0;
+        int slythPoints = 0;
+        int huffPoints = 0;
+        int ravenPoints = 0;
+
+        for (int i = 0; i < 5; i++)
+        {
+            string s = "group" + (i + 1);
+            switch (Request.Form[s])
+            {
+                case "a":
+                    griffPoints++;
+                    break;
+                case "b":
+                    slythPoints++;
+                    break;
+                case "c":
+                    huffPoints++;
+                    break;
+                case "d":
+                    ravenPoints++;
+                    break;
+            }
+        }
+
+        int highestValue = Math.Max(griffPoints, Math.Max(slythPoints, Math.Max(huffPoints, ravenPoints)));
+
+        if (griffPoints == highestValue)
+        {
+            userHouse = "Gryffindor";
+        }
+        if (slythPoints == highestValue)
+        {
+            if (string.IsNullOrEmpty(userHouse))
+            {
+                userHouse = "Slytherin";
+            }
+            else
+            {
+                string slyth = "Slytherin";
+                int usersSlyth = db.QueryValue("SELECT Count(*) FROM UserProfile WHERE House = @0", slyth);
+                int usersOther = db.QueryValue("SELECT Count(*) FROM UserProfile WHERE House = @0", userHouse);
+                if (usersSlyth < usersOther)
+                {
+                    userHouse = "Slytherin";
+                }
+            }
+        }
+        if (huffPoints == highestValue)
+        {
+            if (string.IsNullOrEmpty(userHouse))
+            {
+                userHouse = "Hufflepuff";
+            }
+            else
+            {
+                string huff = "Hufflepuff";
+                int usersHuff = db.QueryValue("SELECT Count(*) FROM UserProfile WHERE House = @0", huff);
+                int usersOther = db.QueryValue("SELECT Count(*) FROM UserProfile WHERE House = @0", userHouse);
+                if (usersHuff < usersOther)
+                {
+                    userHouse = "Hufflepuff";
+                }
+            }
+        }
+        if (ravenPoints == highestValue)
+        {
+            if (string.IsNullOrEmpty(userHouse))
+            {
+                userHouse = "Ravenclaw";
+            }
+            else
+            {
+                string raven = "Ravenclaw";
+                int usersRaven = db.QueryValue("SELECT Count(*) FROM UserProfile WHERE House = @0", raven);
+                int usersOther = db.QueryValue("SELECT Count(*) FROM UserProfile WHERE House = @0", userHouse);
+                if (usersRaven < usersOther)
+                {
+                    userHouse = "Ravenclaw";
+                }
+            }
+        }
+
+        db.Execute("UPDATE UserProfile SET House = @0 WHERE UserId = @1", userHouse, WebSecurity.CurrentUserId);
+        Response.Redirect("SortingResult");
+    }
+
+    //int sorted = db.QueryValue("SELECT Count(House) FROM UserProfile WHERE userId = @0", WebSecurity.CurrentUserId);
+
+    //if(sorted == 1)
+    //{
+    //    Response.Redirect("Home");
+    //}
 }
 <div class="row">
     <div class="center">
@@ -73,7 +182,7 @@
 </div>
 
 <div class="row">
-    <form class="col offset-m2" method="post" action="~/SortingResult.cshtml">
+    <form class="col offset-m2" method="post">
         @RenderPage("~/Vragen/_Vraag1.cshtml")
         @RenderPage("~/Vragen/_Vraag2.cshtml")
         @RenderPage("~/Vragen/_Vraag3.cshtml")
