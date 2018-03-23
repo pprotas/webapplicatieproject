@@ -41,14 +41,14 @@
             }
         }
 
-        int highesValue = Math.Max(griffPoints, Math.Max(slythPoints, Math.Max(huffPoints, ravenPoints)));
+        int highestValue = Math.Max(griffPoints, Math.Max(slythPoints, Math.Max(huffPoints, ravenPoints)));
 
-        if (griffPoints == highesValue)
+        if (griffPoints == highestValue)
         {
             userHouse = "Gryffindor";
             userHouseImg = "Gryffindor.png";
         }
-        if (slythPoints == highesValue)
+        if (slythPoints == highestValue)
         {
             if (string.IsNullOrEmpty(userHouse))
             {
@@ -60,7 +60,7 @@
 
             }
         }
-        if (huffPoints == highesValue)
+        if (huffPoints == highestValue)
         {
             if (string.IsNullOrEmpty(userHouse))
             {
@@ -72,7 +72,7 @@
 
             }
         }
-        if (ravenPoints == highesValue)
+        if (ravenPoints == highestValue)
         {
             if (string.IsNullOrEmpty(userHouse))
             {
@@ -118,7 +118,7 @@
     </div>
     
     <div class="center">
-        <a class="btn">Continue</a>
+        <a class="btn waves-effect">Continue</a>
         <br />
         <br />
     </div>
