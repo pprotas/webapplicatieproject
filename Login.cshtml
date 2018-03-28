@@ -49,12 +49,12 @@
             // Attempt to log in using provided credentials
             if (WebSecurity.Login(userName, password, rememberMe))
             {
-                Response.Redirect("~/Home/");
+                Response.Redirect("~/Home");
                 return;
             }
             else
             {
-                ModelState.AddFormError("Het gebruikersnaam of het wachtwoord waren niet correct.");
+                ModelState.AddFormError("De gebruikersnaam of het wachtwoord waren niet correct.");
             }
         }
     }
