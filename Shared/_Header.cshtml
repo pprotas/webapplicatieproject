@@ -11,18 +11,13 @@
                 <text class="light">
                     Welkom, <a class="black-text" href="~/Manage">@WebSecurity.CurrentUserName</a>
                 </text>
-                <text>
-                    <a class="black-text" href="javascript:document.getElementById('logoutForm').submit()">Log out</a>
-                </text>
+                <a class="black-text" href="~/Logout">Log Out</a>
             </div>
             <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
             <ul id="nav-mobile" class="side-nav">
                 <li><text class="light black-text">Welkom, @WebSecurity.CurrentUserName</text></li>
-                <li><a href="javascript:document.getElementById('logoutForm').submit()">Log out</a></li>
+                <li><a class="black-text" href="~/Logout">Log Out</a></li>
             </ul>
-            <form id="logoutForm" action="~/Logout" method="post">
-                @AntiForgery.GetHtml()
-            </form>
         }
         else
         {

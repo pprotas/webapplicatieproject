@@ -49,7 +49,7 @@
             // Attempt to log in using provided credentials
             if (WebSecurity.Login(userName, password, rememberMe))
             {
-                Response.Redirect("~/Home/");
+                Response.Redirect("~/Home");
                 return;
             }
             else
