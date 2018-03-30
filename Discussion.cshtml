@@ -13,7 +13,7 @@
     {
         string reply = Request.Form["reply"];
 
-        db.Execute("INSERT INTO Discussion(DiscussionName, CommentContent) VALUES (@0, @1)", Request.QueryString["discussionname"], reply);
+        db.Execute("INSERT INTO Discussion(UserName, DiscussionName, CommentContent, LastEdited) VALUES (@0, @1, @2, @3)", WebSecurity.CurrentUserName, Request.QueryString["discussionname"], reply, DateTime.Now);
     }
 
     var discussion = db.Query("SELECT * FROM Discussion WHERE DiscussionName = @0", Request.QueryString["discussionname"]);
@@ -38,13 +38,13 @@
 <div class="row">
     <form class="col s12" method="post">
         <div class="row">
-            <div class="input-field col s12">
+            <div class="input-field col s12 m8 offset-m2">
                 <textarea id="textarea1" class="materialize-textarea" name="reply"></textarea>
                 <label for="textarea1">Quick Reply</label>
             </div>
-            <div class="col s2 m2 offset-m5">
-                <button class="btn waves-effect" type="submit">Reply</button>
-            </div>
+        </div>
+        <div class="center">
+            <button class="btn waves-effect" type="submit">Reply</button>
         </div>
     </form>
 </div>
