@@ -1,0 +1,49 @@
+﻿@{
+    Page.Title = "Sorting Result";
+    Layout = "~/Shared/_SiteLayout.cshtml";
+
+    Database db = Database.Open("Startersite");
+
+    var userHouse = db.QuerySingle("SELECT House FROM UserProfile WHERE UserId = @0", WebSecurity.CurrentUserId);
+
+    //int sorted = db.QueryValue("SELECT Count(House) FROM UserProfile WHERE userId = @0", WebSecurity.CurrentUserId);
+
+    //if(sorted == 1)
+    //{
+    //    Response.Redirect("Home");
+    //}
+}
+
+<div class="row">
+    <div class="center">
+        <h3>Congratulations!</h3>
+        <hr class="col s4 offset-s4" />
+    </div>
+</div>
+
+<div class="row">
+    <div class="center">
+        <h2 class="flow-text">"You are a true @userHouse.House!"</h2>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col s8 offset-s2 m6 offset-m3 l4 offset-l4 card">
+        <div class="card-image waves-effect waves-block waves-light">
+            <img class="activator" src="~/Images/@(userHouse.House).png">
+        </div>
+        <div class="center">
+            <span class="card-title activator grey-text text-darken-4">@userHouse.House</span>
+        </div>
+        <div class="card-reveal">
+            <span class="card-title grey-text text-darken-4">@userHouse.House<i class="material-icons right">close</i></span>
+            <p>Here is some more information about this product that is only revealed once clicked on.</p>
+        </div>
+    </div>
+</div>
+
+<div class="center">
+    <a class="btn waves-effect">Continue</a>
+    <br />
+    <br />
+</div>

@@ -1,0 +1,156 @@
+﻿@{
+    Page.Title = "Registreer";
+    Layout = "~/Shared/_SiteLayout.cshtml";
+
+    // Initialize general page variables
+    var userName = "";
+    var firstName = "";
+    var lastName = "";
+    var age = "";
+    var password = "";
+    var confirmPassword = "";
+
+    // Setup validation
+    Validation.RequireField("user_name", "You must specify an user_name address.");
+    Validation.RequireField("first_name", "You must specify an user_name address.");
+    Validation.RequireField("last_name", "You must specify an user_name address.");
+    Validation.RequireField("age", "You must specify an user_name address.");
+    Validation.RequireField("password", "Password cannot be blank.");
+    Validation.Add("confirm_password",
+        Validator.EqualsTo("password", "Password and confirmation password do not match."));
+    Validation.Add("password",
+        Validator.StringLength(
+            maxLength: Int32.MaxValue,
+            minLength: 6,
+            errorMessage: "Password must be at least 6 characters"));
+
+    // If this is a POST request, validate and process data
+    if (IsPost)
+    {
+        AntiForgery.Validate();
+        userName = Request.Form["user_name"];
+        firstName = Request.Form["first_name"];
+        lastName = Request.Form["last_name"];
+        age = Request.Form["age"];
+        password = Request.Form["password"];
+        confirmPassword = Request.Form["confirm_password"];
+
+        // Validate the user's captcha answer
+        // if (!ReCaptcha.Validate("PRIVATE_KEY")) {
+        //     ModelState.AddError("recaptcha", "Captcha response was not correct");
+        // }
+
+        // If all information is valid, create a new account
+        if (Validation.IsValid())
+        {
+            // Insert a new user into the database
+            var db = Database.Open("StarterSite");
+
+            // Check if user already exists
+            var user = db.QuerySingle("SELECT UserName FROM UserProfile WHERE LOWER(UserName) = LOWER(@0)", userName);
+            if (user == null)
+            {
+                // Insert user_name into the profile table
+                db.Execute("INSERT INTO UserProfile (UserName, FirstName, LastName, Age) VALUES (@0, @1, @2, @3)", userName, firstName, lastName, age);
+
+                // Create and associate a new entry in the membership database.
+                // If successful, continue processing the request
+                try
+                {
+                    bool requireuser_nameConfirmation = !WebMail.SmtpServer.IsEmpty();
+                    var token = WebSecurity.CreateAccount(userName, password, requireuser_nameConfirmation);
+                    //if (requireuser_nameConfirmation)
+                    //{
+                    //    var hostUrl = Request.Url.GetComponents(UriComponents.SchemeAndServer, UriFormat.Unescaped);
+                    //    var confirmationUrl = hostUrl + VirtualPathUtility.ToAbsolute("~/Account/Confirm?confirmationCode=" + HttpUtility.UrlEncode(token));
+
+                    //    WebMail.Send(
+                    //        to: userName,
+                    //        subject: "Please confirm your account",
+                    //        body: "Your confirmation code is: " + token + ". Visit <a href=\"" + confirmationUrl + "\">" + confirmationUrl + "</a> to activate your account."
+                    //    );
+                    //}
+
+                    if (requireuser_nameConfirmation)
+                    {
+                        // Thank the user for registering and let them know an user_name is on its way
+                        Response.Redirect("~/Account/Thanks");
+                    }
+                    else
+                    {
+                        // Navigate back to the homepage and exit
+                        WebSecurity.Login(userName, password);
+
+                        Response.Redirect("~/SortingQuiz");
+                    }
+                }
+                catch (System.Web.Security.MembershipCreateUserException e)
+                {
+                    ModelState.AddFormError(e.Message);
+                }
+            }
+            else
+            {
+                // User already exists
+                ModelState.AddFormError("user_name address is already in use.");
+            }
+        }
+    }
+}
+}
+
+<div class="container">
+    <div class="row">
+        <div class="card col s10 m6 offset-s1 offset-m3">
+            <div class="row">
+                <p class="center light">Voer in de gegevens om te registreren.</p>
+            </div>
+            <div class="row">
+                <form class="col s10 offset-s1" method="post">
+                    @AntiForgery.GetHtml()
+                    <div class="row">
+                        <div class="col s12 input-field ">
+                            <input id="user_name" name="user_name" type="text" class="validate" @Validation.For("user_name")>
+                            <label for="user_name">Gebruikersnaam</label>
+                            <p class="light red-text">@Html.ValidationMessage("user_name")</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s5 input-field ">
+                            <input id="first_name" name="first_name" type="text" class="validate" @Validation.For("first_name")>
+                            <label for="first_name">Voornaam</label>
+                            <p class="light red-text">@Html.ValidationMessage("first_name")</p>
+                        </div>
+                        <div class="col s5 input-field ">
+                            <input id="last_name" name="last_name" type="text" class="validate" @Validation.For("last_name")>
+                            <label for="last_name">Achternaam</label>
+                            <p class="light red-text">@Html.ValidationMessage("last_name")</p>
+                        </div>
+                        <div class="col s2 input-field">
+                            <input id="age" name="age" type="number" class="validate" @Validation.For("age")>
+                            <label for="age">Leeftijd</label>
+                            <p class="light red-text">@Html.ValidationMessage("age")</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s6 input-field">
+                            <input id="password" name="password" type="password" class="validate" @Validation.For("password")>
+                            <label for="password">Wachtwoord</label>
+                            <p class="light red-text">@Html.ValidationMessage("password")</p>
+                        </div>
+                        <div class="col s6 input-field">
+                            <input id="confirm_password" name="confirm_password" type="password" class="validate" @Validation.For("confirm_password")>
+                            <label for="confirm_password">Herhaal wachtwoord</label>
+                            <p class="light red-text">@Html.ValidationMessage("confirm_password")</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="center col s12">
+                            <input class="btn light" type="submit" value="Verder" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

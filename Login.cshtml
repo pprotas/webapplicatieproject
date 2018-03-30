@@ -1,0 +1,100 @@
+﻿@{
+    Page.Title = "Login";
+    Layout = "~/Shared/_SiteLayout.cshtml";
+
+    // Initialize general page variables
+    var userName = "";
+    var password = "";
+    var rememberMe = false;
+
+    var returnUrl = Request.QueryString["ReturnUrl"];
+    if (returnUrl.IsEmpty())
+    {
+        // Some external login providers always require a return URL value
+        returnUrl = Href("~/");
+    }
+
+    // Setup validation
+    Validation.RequireField("user_name", "Je moet een gebruikersnaam invoeren.");
+    Validation.RequireField("password", "Je moet een wachtwoord invoeren.");
+    Validation.Add("password",
+        Validator.StringLength(
+            maxLength: Int32.MaxValue,
+            minLength: 6,
+            errorMessage: "Het wachtwoord moet ten minste 6 tekens lang zijn."));
+
+    // If this is a POST request, validate and process data
+    if (IsPost)
+    {
+        AntiForgery.Validate();
+        //// is this an external login request?
+        //string provider = Request.Form["provider"];
+        //if (!provider.IsEmpty())
+        //{
+        //    OAuthWebSecurity.RequestAuthentication(provider, Href("~/RegisterService", new { returnUrl }));
+        //    return;
+        //}
+        if (Validation.IsValid())
+        {
+            userName = Request.Form["user_name"];
+            password = Request.Form["password"];
+            rememberMe = Request.Form["rememberMe"].AsBool();
+
+            //if (WebSecurity.UserExists(userName) && WebSecurity.GetPasswordFailuresSinceLastSuccess(userName) > 4 && WebSecurity.GetLastPasswordFailureDate(userName).AddSeconds(60) > DateTime.UtcNow)
+            //{
+            //    Response.Redirect("~/Account/AccountLockedOut");
+            //    return;
+            //}
+
+            // Attempt to log in using provided credentials
+            if (WebSecurity.Login(userName, password, rememberMe))
+            {
+                Response.Redirect("~/Home");
+                return;
+            }
+            else
+            {
+                ModelState.AddFormError("Het gebruikersnaam of het wachtwoord waren niet correct.");
+            }
+        }
+    }
+}
+
+<div class="container">
+    <div class="row">
+        <div class="card col s10 m6 offset-s1 offset-m3">
+            <div class="row">
+                <p class="center light">Log in met je gebruikersgegevens.</p>
+            </div>
+            <div class="row">
+                @Html.ValidationSummary("Log in was unsuccessful. Please correct the errors and try again.", excludeFieldErrors: true, htmlAttributes: null)
+                <form class="col s10 offset-s1" method="post">
+                    @AntiForgery.GetHtml()
+                    <div class="row">
+                        <div class="col s12 input-field ">
+                            <input id="user_name" name="user_name" type="text" class="validate" @Validation.For("user_name")>
+                            <label for="user_name">Gebruikersnaam</label>
+                            <p class="light red-text">@Html.ValidationMessage("user_name")</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 input-field">
+                            <input id="password" name="password" type="password" class="validate" @Validation.For("password")>
+                            <label for="password">Wachtwoord</label>
+                            <p class="light red-text">@Html.ValidationMessage("password")</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="center col s6">
+                            <input type="checkbox" class="filled-in" id="rememberMe" name="rememberMe" value="true" checked=@rememberMe />
+                            <label for="rememberMe">Onthoud mij</label>
+                        </div>
+                        <div class="center col s6">
+                            <input class="btn light" type="submit" value="Log in" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
