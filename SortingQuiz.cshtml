@@ -6,9 +6,10 @@
 
     Database db = Database.Open("StarterSite");
 
+
     if (IsPost)
     {
-        Validation.RequireField("group1", "You have to answer this question");
+
         Validation.RequireField("group2", "You have to answer this question");
         Validation.RequireField("group3", "You have to answer this question");
         Validation.RequireField("group4", "You have to answer this question");
@@ -100,7 +101,13 @@
             }
         }
 
+        //De queries om een gebruikersprofiel aan te maken
         db.Execute("UPDATE UserProfile SET House = @0 WHERE UserId = @1", userHouse, WebSecurity.CurrentUserId);
+        db.Execute("INSERT INTO StudentInformation (UserId, Jellybeans, Points, SpellsId, BagId, ClassesId) VALUES (@0, @1, @2, @3, @4, @5)", WebSecurity.CurrentUserId, 100, 0, WebSecurity.CurrentUserId, WebSecurity.CurrentUserId, WebSecurity.CurrentUserId);
+        db.Execute("INSERT INTO Classes (ClassesId, Class1, Class2, Class3, Class4, Class5, Class6, Class7) VALUES (@0, @1, @2, @3, @4, @5, @6, @7)", WebSecurity.CurrentUserId,"Potions", "Defence Against the Dark Arts", "Transfiguration", "Herbology", "Charms", "History of Magic", "Astronomy");
+        db.Execute("INSERT INTO Bag (BagId) VALUES (@0)", WebSecurity.CurrentUserId);
+        db.Execute("INSERT INTO Spells (SpellsId) VALUES (@0)", WebSecurity.CurrentUserId);
+        Validation.RequireField("group1", "You have to answer this question");
         Response.Redirect("SortingResult");
     }
 

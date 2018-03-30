@@ -1,58 +1,111 @@
 ﻿@{
     Page.Title = "Profile";
     Layout = "~/Shared/_SiteLayout.cshtml";
+
+    Database db = Database.Open("StarterSite");
+
+    var house = db.QuerySingle("SELECT House FROM UserProfile WHERE UserId = @0", WebSecurity.CurrentUserId);
+    var jellybeans = db.QuerySingle("SELECT Jellybeans FROM StudentInformation WHERE UserId = @0", WebSecurity.CurrentUserId);
+    var points = db.QuerySingle("SELECT Points FROM StudentInformation WHERE UserId = @0", WebSecurity.CurrentUserId);
+    var classes = db.QuerySingle("SELECT Class1, Class2, Class3, Class4, Class5, Class6, Class7 FROM Classes WHERE ClassesId = @0", WebSecurity.CurrentUserId);
+    string userHouse = house.House;
 }
 
-<div class="card">
-    <h5 class="center-align">@WebSecurity.CurrentUserName</h5>
-</div>
 <div class="container">
     <div class="row">
-        <div>
-            <div class="col m3 offset-m3">
-                <div class="card">
-                    <div class="card-image">
-                        <img src="http://www.personalbrandingblog.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640-300x300.png">
-                    </div>
-                </div>
-    </div>
-            <div class="col m3">
-                <div class="card">
-                    <div class="card-image">
-                        <img src="http://www.personalbrandingblog.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640-300x300.png">
+        <div class="card">
+            <h5 class="center-align">@WebSecurity.CurrentUserName</h5>
+            <div class="row">
+                <div class="col s12">
+                    <div class="card-image col s6 m2 offset-m5">
+                        @switch (userHouse)
+                        {
+                            case ("Gryffindor"):
+                                <img src="~/Images/Gryffindor.png" />
+                                break;
+                            case ("Slytherin"):
+                                <img src="~/Images/Slytherin.png" />
+                                break;
+                            case ("Hufflepuff"):
+                                <img src="~/Images/Hufflepuff.png" />
+                                break;
+                            case ("Ravenclaw"):
+                                <img src="~/Images/Ravenclaw.png" />
+                                break;
+                        }
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <div>
-        <h5 class="center-align">Student Information</h5>
-    </div>
-    <div class="row">
-        <div class="col s6">
-            <div class="card">
-                <dl>
-                    <dt>Jellybeans</dt>
-                    <dt>Points</dt>
-                    <dt>Known Spells</dt>
-                    <dd>None so far</dd>
-                    <dt>Schoolbag</dt>
-                </dl>
+            <div class="row">
+                <h5 class="center-align">Student Information</h5>
             </div>
-        </div>
-        <div class="col s6">
-            <div class="card">
-                <dl style="list-style-type:square">
-                    <dt>Classes</dt>
-                            <dd>Potions</dd>
-                            <dd>Transfiguration</dd>
-                            <dd>Herbology</dd>
-                            <dd>More..</dd>
-                </dl>
+            <div class="row">
+                <div class="col s12 m5 offset-m1">
+                    <div class="row">
+                        <div class="col s12">
+                            <b>Jellybeans:</b> @jellybeans.Jellybeans
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12">
+                            <b>Points:</b> @points.Points
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12">
+                            <b>Known spells:</b>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12">
+                            None so far
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m5 offset-m1">
+                    <div class="row">
+                        <div class="col s12">
+                            <b>Classes:</b>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12">
+                            @classes.Class1
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12">
+                            @classes.Class2
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12">
+                            @classes.Class3
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12">
+                            @classes.Class4
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12">
+                            @classes.Class5
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12">
+                            @classes.Class6
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12">
+                            @classes.Class7
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
-

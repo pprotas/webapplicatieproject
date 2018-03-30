@@ -6,7 +6,6 @@
     var userName = "";
     var firstName = "";
     var lastName = "";
-    var age = "";
     var password = "";
     var confirmPassword = "";
 
@@ -14,7 +13,6 @@
     Validation.RequireField("user_name", "You must specify an user_name address.");
     Validation.RequireField("first_name", "You must specify an user_name address.");
     Validation.RequireField("last_name", "You must specify an user_name address.");
-    Validation.RequireField("age", "You must specify an user_name address.");
     Validation.RequireField("password", "Password cannot be blank.");
     Validation.Add("confirm_password",
         Validator.EqualsTo("password", "Password and confirmation password do not match."));
@@ -31,7 +29,6 @@
         userName = Request.Form["user_name"];
         firstName = Request.Form["first_name"];
         lastName = Request.Form["last_name"];
-        age = Request.Form["age"];
         password = Request.Form["password"];
         confirmPassword = Request.Form["confirm_password"];
 
@@ -51,8 +48,7 @@
             if (user == null)
             {
                 // Insert user_name into the profile table
-                db.Execute("INSERT INTO UserProfile (UserName, FirstName, LastName, Age) VALUES (@0, @1, @2, @3)", userName, firstName, lastName, age);
-
+                db.Execute("INSERT INTO UserProfile (UserName, FirstName, LastName, Year) VALUES (@0, @1, @2, @3)", userName, firstName, lastName, 1);
                 // Create and associate a new entry in the membership database.
                 // If successful, continue processing the request
                 try
@@ -97,7 +93,6 @@
         }
     }
 }
-}
 
 <div class="container">
     <div class="row">
@@ -116,20 +111,15 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col s5 input-field ">
+                        <div class="col s6 input-field ">
                             <input id="first_name" name="first_name" type="text" class="validate" @Validation.For("first_name")>
                             <label for="first_name">Voornaam</label>
                             <p class="light red-text">@Html.ValidationMessage("first_name")</p>
                         </div>
-                        <div class="col s5 input-field ">
+                        <div class="col s6 input-field ">
                             <input id="last_name" name="last_name" type="text" class="validate" @Validation.For("last_name")>
                             <label for="last_name">Achternaam</label>
                             <p class="light red-text">@Html.ValidationMessage("last_name")</p>
-                        </div>
-                        <div class="col s2 input-field">
-                            <input id="age" name="age" type="number" class="validate" @Validation.For("age")>
-                            <label for="age">Leeftijd</label>
-                            <p class="light red-text">@Html.ValidationMessage("age")</p>
                         </div>
                     </div>
                     <div class="row">
