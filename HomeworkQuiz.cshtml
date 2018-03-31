@@ -1,0 +1,12 @@
+﻿@{
+    Page.Title = "HomeworkQuiz";
+    Layout = "~/Shared/_SiteLayout.cshtml";
+}
+
+<div class="row">
+    <form method="post">
+        @RenderPage("~/HomeworkVragen/_HomeworkVraag1.cshtml")
+        @RenderPage("~/HomeworkVragen/_HomeworkVraag2.cshtml")
+        @RenderPage("~/HomeworkVragen/_HomeworkVraag3.cshtml")
+    </form>
+</div>
