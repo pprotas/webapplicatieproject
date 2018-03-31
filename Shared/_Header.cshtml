@@ -4,31 +4,32 @@
 
 <nav class="white" role="navigation">
     <div class="nav-wrapper container">
-        <a id="logo-container" href="~/Home" class="brand-logo">DumbleMore</a>
+        <a id="logo-container" href="~/Home" class="brand-logo black-text">DumbleMore</a>
         @if (WebSecurity.IsAuthenticated)
         {
             <div class="black-text right hide-on-med-and-down">
-                <text class="light">
-                    Welkom, <a class="black-text" href="~/Manage">@WebSecurity.CurrentUserName</a>
-                </text>
-                <a class="black-text" href="~/Logout">Log Out</a>
+                <a class="btn waves-effect black light" href="~/UserProfile">@WebSecurity.CurrentUserName</a>
+                <a class="light btn waves-effect black" href="~/Forum">Forum</a>
+                <a class="btn waves-effect black light" href="~/Logout">Log Out</a>
             </div>
             <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
             <ul id="nav-mobile" class="side-nav">
-                <li><text class="light black-text">Welkom, @WebSecurity.CurrentUserName</text></li>
+                <li><text class="light black-text">Welcome, @WebSecurity.CurrentUserName</text></li>
+                <li><a class="black-text" href="~/UserProfile">Profile</a></li>
+                <li><a class="black-text" href="~/Forum">Forum</a></li>
                 <li><a class="black-text" href="~/Logout">Log Out</a></li>
             </ul>
         }
         else
         {
             <ul class="right hide-on-med-and-down">
-                <li><a href="~/Login" class="btn">Log In</a></li>
-                <li><a href="~/Register" class="btn">Registreer</a></li>
+                <li><a href="~/Login" class="btn waves-effect black light">Log In</a></li>
+                <li><a href="~/Register" class="btn waves-effect black light">Enroll</a></li>
             </ul>
             <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
             <ul id="nav-mobile" class="side-nav">
-                <li><a href="~/Login" class="btn">Log In</a></li>
-                <li><a href="~/Register" class="btn">Registreer</a></li>
+                <li><a href="~/Login" class="btn waves-effect black light">Log In</a></li>
+                <li><a href="~/Register" class="btn waves-effect black light">Enroll</a></li>
             </ul>
 
         }

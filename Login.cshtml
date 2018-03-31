@@ -64,7 +64,7 @@
     <div class="row">
         <div class="card col s10 m6 offset-s1 offset-m3">
             <div class="row">
-                <p class="center light">Log in met je gebruikersgegevens.</p>
+                <p class="center light">Log In using your user credentials.</p>
             </div>
             <div class="row">
                 @Html.ValidationSummary("Log in was unsuccessful. Please correct the errors and try again.", excludeFieldErrors: true, htmlAttributes: null)
@@ -73,28 +73,29 @@
                     <div class="row">
                         <div class="col s12 input-field ">
                             <input id="user_name" name="user_name" type="text" class="validate" @Validation.For("user_name")>
-                            <label for="user_name">Gebruikersnaam</label>
+                            <label for="user_name">Username</label>
                             <p class="light red-text">@Html.ValidationMessage("user_name")</p>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col s12 input-field">
                             <input id="password" name="password" type="password" class="validate" @Validation.For("password")>
-                            <label for="password">Wachtwoord</label>
+                            <label for="password">Password</label>
                             <p class="light red-text">@Html.ValidationMessage("password")</p>
                         </div>
                     </div>
                     <div class="row">
                         <div class="center col s6">
                             <input type="checkbox" class="filled-in" id="rememberMe" name="rememberMe" value="true" checked=@rememberMe />
-                            <label for="rememberMe">Onthoud mij</label>
+                            <label for="rememberMe">Remember me</label>
                         </div>
                         <div class="center col s6">
-                            <input class="btn light" type="submit" value="Log in" />
+                            <input class="btn light waves-effect black" type="submit" value="Log in" />
                         </div>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+    <div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div>
 </div>
