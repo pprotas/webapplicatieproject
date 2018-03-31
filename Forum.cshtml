@@ -1,0 +1,174 @@
+﻿@{
+    Page.Title = "Forum";
+    Layout = "~/Shared/_SiteLayout.cshtml";
+
+    Database db = Database.Open("StarterSite");
+
+    var userClasses = db.QuerySingle("SELECT Class1, Class2, Class3, Class4, Class5, Class6, Class7 FROM Classes WHERE ClassesId = @0", WebSecurity.CurrentUserId);
+    var classes = db.Query("SELECT Class, Teacher, LastEdited FROM Homework WHERE Class = @0 OR Class = @1 OR Class = @2 OR Class = @3 OR Class = @4 OR Class = @5 OR Class = @6",
+        userClasses.Class1, userClasses.Class2, userClasses.Class3, userClasses.Class4, userClasses.Class5, userClasses.Class6, userClasses.Class7);
+    var discussion = db.Query("SELECT DiscussionName, UserName, LastEdited FROM Discussion WHERE FirstPost = 1");
+
+}
+
+
+<div class="row">
+    <div class="col s2 m5"></div>
+    <div class="col "><h1>Forum</h1></div>
+</div>
+
+
+<div>
+    <div class="row">
+        <div class="col s1 m2"></div>
+        <div class="col "><h4>Homework Year one</h4></div>
+    </div>
+    <div class="row">
+        <div>
+            <div class=" col m1 l2"></div>
+            <div class=" col s12 m10 l8">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="col m5">Title</th>
+                            <th class="col m5">Author</th>
+                            <th class="col m2" style="text-align:right">Last edited</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var subject in classes)
+                        {
+                            <tr>
+                                <td class="col m5"><a href="~/Homework.cshtml?class=@HttpUtility.UrlEncode(@subject.Class)">Homework @subject.Class</a></td>
+                                <td class="col m5">@subject.Teacher</td>
+                                <td class="col m2" style="text-align:right">@subject.LastEdited</td>
+                            </tr>
+                        }
+
+                        @*<tr>
+                                <td class="col m5"><a href="~/Homework.cshtml?class=Potions">Homework Potions</a></td>
+                                <td class="col m5">Professor Snape</td>
+                                <td class="col m2" style="text-align:right">11:41 21-03-2018</td>
+                            </tr>
+                            <tr>
+                                <td class="col m5"><a href="~/Homework.cshtml?class=@HttpUtility.UrlEncode("Defence against the dark arts")">Homework Defence against the dark arts</a></td>
+                                <td class="col m3">Professor Quirrell</td>
+                                <td class="col m4" style="text-align:right">11:41 21-03-2018</td>
+
+                            </tr>
+                            <tr>
+                                <td class="col m5"><a href="~/Homework.cshtml?class=Transfiguration">Homework Transfiguration</a></td>
+                                <td class="col m3">Professor McGonagall</td>
+                                <td class="col m4" style="text-align:right">11:51 21-03-2018</td>
+                            </tr>*@
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<div>
+    <div class="row">
+        <div class="col s1 m2"></div>
+        <div class="col "><h4>General Discussions</h4></div>
+    </div>
+    <div class="row">
+        <div>
+            <div class=" col s1 m2"></div>
+            <div class=" col s10 m8">
+                <table>
+                    <thead>
+
+                        <tr>
+                            <th class="col m5">Title</th>
+                            <th class="col m5">Author</th>
+                            <th class="col m2" style="text-align:right">Last edited</th>
+                        </tr>
+
+
+                    <tbody>
+                        @foreach (var dis in discussion)
+                        {
+                            <tr>
+                                <td class="col m5"><a href="~/Discussion.cshtml?discussionname=@HttpUtility.UrlEncode(dis.DiscussionName)">@dis.DiscussionName</a></td>
+                                <td class="col m5">@dis.UserName</td>
+                                <td class="col m2" style="text-align:right">@dis.LastEdited</td>
+                            </tr>
+                        }
+
+                        @*<tr>
+                                <td class="col m5"><a href="~/Discussion.cshtml?discussionname=@HttpUtility.UrlEncode("Your thoughts on the teachers")">Your thoughts on the teachers</a></td>
+                                <td class="col m3">D. Onut</td>
+                                <td class="col m4" style="text-align:right">11:54 21-03-2018</td>
+                            </tr>
+                            <tr>
+                                <td class="col m5"><a href="~/Discussion.cshtml?discussionname=@HttpUtility.UrlEncode("Dumbledore's Army")">Dumbledore's army</a></td>
+                                <td class="col m3">H. Potter</td>
+                                <td class="col m4" style="text-align:right">11:55 21-03-2018</td>
+                            </tr>
+                            <tr>
+                                <td class="col m5"><a href="~/Discussion.cshtml?discussionname=@HttpUtility.UrlEncode("Best shop in Hogsmeade")">Best shop in Hogsmeade</a></td>
+                                <td class="col m3">R. Weasly</td>
+                                <td class="col m4" style="text-align:right">11:57 21-03-2018</td>
+                            </tr>*@
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div>
+    <div class="row">
+        <div class="col s1 m2"></div>
+        <div class="col "><h4>Acitivies Year One</h4></div>
+    </div>
+    <div class="row">
+        <div>
+            <div class=" col s1 m2"></div>
+            <div class=" col s10 m8">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="col m5">Title</th>
+                            <th class="col m3">Author</th>
+                            <th class="col m4" style="text-align:right">Last edited</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td class="col m5"><a href="">Quidditch</a></td>
+                            <td class="col m3">H. Potter</td>
+                            <td class="col m4" style="text-align:right">11:54 21-03-2018</td>
+                        </tr>
+                        <tr>
+                            <td class="col m5"><a href="">Exams</a></td>
+                            <td class="col m3">H. Granger</td>
+                            <td class="col m4" style="text-align:right">12:12 21-03-2018</td>
+                        </tr>
+                        <tr>
+                            <td class="col m5"><a href="">Marketplace</a></td>
+                            <td class="col m3">F. Weasly</td>
+                            <td class="col m4" style="text-align:right">12:13 21-03-2018</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div>
+
+</div>
