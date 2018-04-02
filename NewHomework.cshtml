@@ -1,0 +1,52 @@
+﻿@{
+    Page.Title = "New Homework";
+    Layout = "~/Shared/_SiteLayout.cshtml";
+
+    if (!Roles.IsUserInRole("teacher"))
+    {
+        Response.Redirect("~/Forum"
+            + Request.Url.LocalPath);
+    }
+
+    if (IsPost)
+    {
+        var title = Request["title"];
+        var clas = Request["class"];
+        var description = Request["description"];
+        Database db = Database.Open("StarterSite");
+        var name = db.QuerySingle("SELECT FirstName, LastName FROM UserProfile WHERE UserId = @0", WebSecurity.CurrentUserId);
+        db.Execute("INSERT INTO Homework (Year, Class, Teacher, HomeworkDescription, LastEdited) VALUES (@0, @1, @2, @3, @4)", 1, clas, name.FirstName + " " + name.LastName, description, DateTime.Now);
+        Response.Redirect("~/Forum");
+    }
+}
+
+<div class="container">
+    <div class="row">
+        <div class="card">
+            <div class="card-content">
+                <form method="post">
+                    <div class="row">
+                        <div class="col s6">
+                            <input placeholder="Title" id="title" name="title" type="text" class="validate">
+                            <label for="title">Title</label>
+                        </div>
+                        <div class="col s6">
+                            <input placeholder="Class" id="class" name="class" type="text" class="validate">
+                            <label for="class">Class</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12">
+                            <textarea name="description" id="textarea1" class="materialize-textarea"></textarea>
+                            <label for="textarea1">Description</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <input type="submit" class="btn black light waves-effect" value="Finished" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div>
+</div>

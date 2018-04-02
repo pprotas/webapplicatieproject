@@ -3,95 +3,193 @@
     Layout = "~/Shared/_SiteLayout.cshtml";
 }
 
-<div id="index-banner" class="parallax-container">
-    <div class="section no-pad-bot">
-        <div class="container">
-            <br><br>
-            <h1 class="header center">Welcome to Hogwarts.</h1>
-            <div class="row center">
-                <h5 class="header col s12 light">Soon your journey will begin.</h5>
-            </div>
-            <div class="row center">
-                <a href="http://materializecss.com/getting-started.html" id="download-button" class="btn-large waves-effect waves-light materialize-red">Enroll</a>
-            </div>
-            <br><br>
+@if (WebSecurity.IsAuthenticated)
+{
+    <div id="index-banner" class="parallax-container">
+        <div class="section no-pad-bot">
+            <div class="container">
+                <br><br>
+                <h1 class="header center">Welcome to Hogwarts.</h1>
+                <div class="row center">
+                    <h5 class="header col s12 light">Your journey has begun.</h5>
+                </div>
+                <div class="row center">
+                    <a href="~/Forum" id="download-button" class="btn-large waves-effect waves-light materialize-red">Visit the forum</a>
+                </div>
+                <br><br>
 
+            </div>
         </div>
+        <div class="parallax"><img src="~/Images/background1.jpg" alt="Unsplashed background img 1"></div>
     </div>
-    <div class="parallax"><img src="~/Images/background1.jpg" alt="Unsplashed background img 1"></div>
-</div>
 
 
-<div class="container">
-    <div class="section">
+    <div class="container">
+        <div class="section">
 
-        <!--   Icon Section   -->
-        <div class="row">
-            <div class="col s12 m4">
-                <div class="icon-block">
-                    <h2 class="center black-text"><i class="material-icons">flash_on</i></h2>
-                    <h5 class="center">Learn powerful spells</h5>
+            <!--   Icon Section   -->
+            <div class="row">
+                <div class="col s12 m4">
+                    <div class="icon-block">
+                        <h2 class="center black-text"><i class="material-icons">flash_on</i></h2>
+                        <h5 class="center">Learn powerful spells</h5>
 
-                    <p class="light">Truly immerse yourself in the Harry Potter universe by attending classes and studying powerful magic.</p>
+                        <p class="light">Truly immerse yourself in the Harry Potter universe by attending classes and studying powerful magic.</p>
+                    </div>
+                </div>
+
+                <div class="col s12 m4">
+                    <div class="icon-block">
+                        <h2 class="center black-text"><i class="material-icons">group</i></h2>
+                        <h5 class="center">Make friends</h5>
+
+                        <p class="light">Enjoy the community our forum has to offer and make new friends, powerful allies and fearsome enemies.</p>
+                    </div>
+                </div>
+
+                <div class="col s12 m4">
+                    <div class="icon-block">
+                        <h2 class="center black-text"><i class="material-icons">gamepad</i></h2>
+                        <h5 class="center">Participate in activities</h5>
+
+                        <p class="light">Our forum is filled to the brim with fun activities, homework and user discussion that will provide you with hours of entertainment.</p>
+                    </div>
                 </div>
             </div>
 
-            <div class="col s12 m4">
-                <div class="icon-block">
-                    <h2 class="center black-text"><i class="material-icons">group</i></h2>
-                    <h5 class="center">Make friends</h5>
+        </div>
+    </div>
 
-                    <p class="light">Enjoy the community our forum has to offer and make new friends, powerful allies and fearsome enemies.</p>
-                </div>
-            </div>
 
-            <div class="col s12 m4">
-                <div class="icon-block">
-                    <h2 class="center black-text"><i class="material-icons">gamepad</i></h2>
-                    <h5 class="center">Participate in activities</h5>
-
-                    <p class="light">Our forum is filled to the brim with fun activities, homework and user discussion that will provide you with hours of entertainment.</p>
+    <div class="parallax-container valign-wrapper">
+        <div class="section no-pad-bot">
+            <div class="container">
+                <div class="row center">
+                    <h5 class="header col s12 light">The train for Hogwarts will be leaving soon...</h5>
                 </div>
             </div>
         </div>
-
+        <div class="parallax"><img src="~/Images/background2.jpg" alt="Unsplashed background img 2"></div>
     </div>
-</div>
 
+    <div class="container">
+        <div class="section">
 
-<div class="parallax-container valign-wrapper">
-    <div class="section no-pad-bot">
-        <div class="container">
-            <div class="row center">
-                <h5 class="header col s12 light">The train for Hogwarts will be leaving soon...</h5>
+            <div class="row">
+                <div class="col s12 center">
+                    <h3><i class="mdi-content-send brown-text"></i></h3>
+                    <h4>Why wait?</h4>
+                    <p class="left-align light">Just create an account and start now. Soon you will be sorted into a house. Afterwards your adventure begins! Who knows what the universe has in store for you... Only time will tell. Press one of the "Enroll" buttons at the top of the page to begin.</p>
+                </div>
             </div>
+
         </div>
     </div>
-    <div class="parallax"><img src="~/Images/background2.jpg" alt="Unsplashed background img 2"></div>
-</div>
 
-<div class="container">
-    <div class="section">
 
-        <div class="row">
-            <div class="col s12 center">
-                <h3><i class="mdi-content-send brown-text"></i></h3>
-                <h4>Why wait?</h4>
-                <p class="left-align light">Just create an account and start now. Soon you will be sorted into a house. Afterwards your adventure begins! Who knows what the universe has in store for you... Only time will tell. Press one of the "Enroll" buttons at the top of the page to begin.</p>
+    <div class="parallax-container valign-wrapper">
+        <div class="section no-pad-bot">
+            <div class="container">
+                <div class="row center">
+                    <h5 class="header col s12 light">Which house suits you the most? I do wonder...</h5>
+                </div>
             </div>
         </div>
-
+        <div class="parallax"><img src="~/Images/background3.jpg" alt="Unsplashed background img 3"></div>
     </div>
-</div>
+}
+else
+{
+    <div id="index-banner" class="parallax-container">
+        <div class="section no-pad-bot">
+            <div class="container">
+                <br><br>
+                <h1 class="header center">Welcome to Hogwarts.</h1>
+                <div class="row center">
+                    <h5 class="header col s12 light">Soon your journey will begin.</h5>
+                </div>
+                <div class="row center">
+                    <a href="~/Register" id="download-button" class="btn-large waves-effect waves-light materialize-red">Enroll</a>
+                </div>
+                <br><br>
 
-
-<div class="parallax-container valign-wrapper">
-    <div class="section no-pad-bot">
-        <div class="container">
-            <div class="row center">
-                <h5 class="header col s12 light">Which house suits you the most? I do wonder...</h5>
             </div>
         </div>
+        <div class="parallax"><img src="~/Images/background1.jpg" alt="Unsplashed background img 1"></div>
     </div>
-    <div class="parallax"><img src="~/Images/background3.jpg" alt="Unsplashed background img 3"></div>
-</div>
+
+
+    <div class="container">
+        <div class="section">
+
+            <!--   Icon Section   -->
+            <div class="row">
+                <div class="col s12 m4">
+                    <div class="icon-block">
+                        <h2 class="center black-text"><i class="material-icons">flash_on</i></h2>
+                        <h5 class="center">Learn powerful spells</h5>
+
+                        <p class="light">Truly immerse yourself in the Harry Potter universe by attending classes and studying powerful magic.</p>
+                    </div>
+                </div>
+
+                <div class="col s12 m4">
+                    <div class="icon-block">
+                        <h2 class="center black-text"><i class="material-icons">group</i></h2>
+                        <h5 class="center">Make friends</h5>
+
+                        <p class="light">Enjoy the community our forum has to offer and make new friends, powerful allies and fearsome enemies.</p>
+                    </div>
+                </div>
+
+                <div class="col s12 m4">
+                    <div class="icon-block">
+                        <h2 class="center black-text"><i class="material-icons">gamepad</i></h2>
+                        <h5 class="center">Participate in activities</h5>
+
+                        <p class="light">Our forum is filled to the brim with fun activities, homework and user discussion that will provide you with hours of entertainment.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="parallax-container valign-wrapper">
+        <div class="section no-pad-bot">
+            <div class="container">
+                <div class="row center">
+                    <h5 class="header col s12 light">You have arrived at Hogwarts.</h5>
+                </div>
+            </div>
+        </div>
+        <div class="parallax"><img src="~/Images/background2.jpg" alt="Unsplashed background img 2"></div>
+    </div>
+
+    <div class="container">
+        <div class="section">
+
+            <div class="row">
+                <div class="col s12 center">
+                    <h3><i class="mdi-content-send brown-text"></i></h3>
+                    <h4>Why wait?</h4>
+                    <p class="left-align light">Just create an account and start now. Soon you will be sorted into a house. Afterwards your adventure begins! Who knows what the universe has in store for you... Only time will tell. Press one of the "Enroll" buttons at the top of the page to begin.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="parallax-container valign-wrapper">
+        <div class="section no-pad-bot">
+            <div class="container">
+                <div class="row center">
+                    <h5 class="header col s12 light">The house has been chosen... We will see what the future has in store for you.</h5>
+                </div>
+            </div>
+        </div>
+        <div class="parallax"><img src="~/Images/background3.jpg" alt="Unsplashed background img 3"></div>
+    </div>
+}

@@ -2,6 +2,12 @@
     Page.Title = "Sorting Result";
     Layout = "~/Shared/_SiteLayout.cshtml";
 
+    if (!WebSecurity.IsAuthenticated)
+    {
+        Response.Redirect("~/Login"
+            + Request.Url.LocalPath);
+    }
+
     Database db = Database.Open("Startersite");
 
     var userHouse = db.QuerySingle("SELECT House FROM UserProfile WHERE UserId = @0", WebSecurity.CurrentUserId);

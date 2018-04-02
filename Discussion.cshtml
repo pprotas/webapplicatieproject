@@ -2,6 +2,12 @@
     Page.Title = "Discussion" + Request.QueryString["discussionname"];
     Layout = "~/Shared/_SiteLayout.cshtml";
 
+    if (!WebSecurity.IsAuthenticated)
+    {
+        Response.Redirect("~/Login"
+            + Request.Url.LocalPath);
+    }
+
     if (IsPost)
     {
         Validation.RequireField("reply");
@@ -12,8 +18,8 @@
     if(IsPost && Validation.IsValid())
     {
         string reply = Request.Form["reply"];
-
-        db.Execute("INSERT INTO Discussion(UserName, DiscussionName, CommentContent, LastEdited) VALUES (@0, @1, @2, @3)", WebSecurity.CurrentUserName, Request.QueryString["discussionname"], reply, DateTime.Now);
+        var name = db.QuerySingle("SELECT FirstName, LastName FROM UserProfile WHERE UserId = @0", WebSecurity.CurrentUserId);
+        db.Execute("INSERT INTO Discussion(UserName, DiscussionName, CommentContent, LastEdited) VALUES (@0, @1, @2, @3)", name.FirstName + " " + name.LastName, Request.QueryString["discussionname"], reply, DateTime.Now);
     }
 
     var discussion = db.Query("SELECT * FROM Discussion WHERE DiscussionName = @0", Request.QueryString["discussionname"]);

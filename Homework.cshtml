@@ -2,6 +2,12 @@
     Page.Title = "Homework" + Request.QueryString["class"];
     Layout = "~/Shared/_SiteLayout.cshtml";
 
+    if (!WebSecurity.IsAuthenticated)
+    {
+        Response.Redirect("~/Login"
+            + Request.Url.LocalPath);
+    }
+
     Database db = Database.Open("StarterSite");
 
     if (Request.QueryString["class"] == null)

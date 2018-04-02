@@ -1,4 +1,10 @@
 ﻿@{
+    if (!WebSecurity.IsAuthenticated)
+    {
+        Response.Redirect("~/Login"
+            + Request.Url.LocalPath);
+    }
+
     // Log out of the current user context
     WebSecurity.Logout();
 

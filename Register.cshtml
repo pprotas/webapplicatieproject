@@ -10,9 +10,9 @@
     var confirmPassword = "";
 
     // Setup validation
-    Validation.RequireField("user_name", "You must specify an user_name address.");
-    Validation.RequireField("first_name", "You must specify an user_name address.");
-    Validation.RequireField("last_name", "You must specify an user_name address.");
+    Validation.RequireField("user_name", "You must specify a username.");
+    Validation.RequireField("first_name", "You must specify a first name.");
+    Validation.RequireField("last_name", "You must specify a last name.");
     Validation.RequireField("password", "Password cannot be blank.");
     Validation.Add("confirm_password",
         Validator.EqualsTo("password", "Password and confirmation password do not match."));
@@ -88,7 +88,7 @@
             else
             {
                 // User already exists
-                ModelState.AddFormError("user_name address is already in use.");
+                ModelState.AddFormError("Username is already in use.");
             }
         }
     }

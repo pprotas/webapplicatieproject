@@ -1,0 +1,47 @@
+﻿@{
+    Page.Title = "New Post";
+    Layout = "~/Shared/_SiteLayout.cshtml";
+
+    if (!WebSecurity.IsAuthenticated)
+    {
+        Response.Redirect("~/Login"
+            + Request.Url.LocalPath);
+    }
+
+    if (IsPost)
+    {
+        var title = Request["title"];
+        var description = Request["description"];
+        Database db = Database.Open("StarterSite");
+        var name = db.QuerySingle("SELECT FirstName, LastName FROM UserProfile WHERE UserId = @0", WebSecurity.CurrentUserId);
+        db.Execute("INSERT INTO Discussion (UserName, DiscussionName, CommentContent, LastEdited, FirstPost) VALUES (@0, @1, @2, @3, @4)", name.FirstName + " " + name.LastName, title, description, DateTime.Now, true);
+        Response.Redirect("~/Forum");
+    }
+}
+
+<div class="container">
+    <div class="row">
+        <div class="card">
+            <div class="card-content">
+                <form method="post">
+                    <div class="row">
+                        <div class="col s12">
+                            <input placeholder="Title" id="title" name="title" type="text" class="validate">
+                            <label for="title">Title</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12">
+                            <textarea name="description" id="textarea1" class="materialize-textarea"></textarea>
+                            <label for="textarea1">Description</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <input type="submit" class="btn black light waves-effect" value="Finished" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div>
+</div>

@@ -1,6 +1,20 @@
 ﻿@{
     Page.Title = "HomeworkQuiz";
     Layout = "~/Shared/_SiteLayout.cshtml";
+
+    if (!WebSecurity.IsAuthenticated)
+    {
+        Response.Redirect("~/Login"
+            + Request.Url.LocalPath);
+    }
+
+    if (IsPost)
+    {
+        Database db = Database.Open("StarterSite");
+        var pointsAndJellybeans = db.QuerySingle("SELECT Points, Jellybeans FROM StudentInformation WHERE UserId = @0", WebSecurity.CurrentUserId);
+        db.Execute("UPDATE StudentInformation SET Points = @0, Jellybeans = @1 WHERE UserId = @2", pointsAndJellybeans.Points + 10, pointsAndJellybeans.Jellybeans + 25, WebSecurity.CurrentUserId);
+        Response.Redirect("~/Forum");
+    }
 }
 
 <div class="row">
@@ -8,5 +22,6 @@
         @RenderPage("~/HomeworkVragen/_HomeworkVraag1.cshtml")
         @RenderPage("~/HomeworkVragen/_HomeworkVraag2.cshtml")
         @RenderPage("~/HomeworkVragen/_HomeworkVraag3.cshtml")
+        <input type="submit" class="btn waves-effect light black" value="Submit"/>
     </form>
 </div>

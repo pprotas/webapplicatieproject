@@ -2,6 +2,12 @@
     Page.Title = "Sorting Quiz";
     Layout = "~/Shared/_SiteLayout.cshtml";
 
+    if (!WebSecurity.IsAuthenticated)
+    {
+        Response.Redirect("~/Login"
+            + Request.Url.LocalPath);
+    }
+
     string userHouse = "";
 
     Database db = Database.Open("StarterSite");

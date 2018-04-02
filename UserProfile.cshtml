@@ -2,22 +2,32 @@
     Page.Title = "Profile";
     Layout = "~/Shared/_SiteLayout.cshtml";
 
+    if (!WebSecurity.IsAuthenticated)
+    {
+        Response.Redirect("~/Login"
+            + Request.Url.LocalPath);
+    }
+
     Database db = Database.Open("StarterSite");
+
+    var name = db.QuerySingle("SELECT FirstName, LastName FROM UserProfile WHERE UserId = @0", WebSecurity.CurrentUserId);
 
     var house = db.QuerySingle("SELECT House FROM UserProfile WHERE UserId = @0", WebSecurity.CurrentUserId);
     var jellybeans = db.QuerySingle("SELECT Jellybeans FROM StudentInformation WHERE UserId = @0", WebSecurity.CurrentUserId);
     var points = db.QuerySingle("SELECT Points FROM StudentInformation WHERE UserId = @0", WebSecurity.CurrentUserId);
     var classes = db.QuerySingle("SELECT Class1, Class2, Class3, Class4, Class5, Class6, Class7 FROM Classes WHERE ClassesId = @0", WebSecurity.CurrentUserId);
+    var spells = db.QuerySingle("SELECT Spell1, Spell2, Spell3 FROM Spells WHERE SpellsId = @0", WebSecurity.CurrentUserId);
     string userHouse = house.House;
 }
+
 
 <div class="container">
     <div class="row">
         <div class="card">
-            <h5 class="center-align">@WebSecurity.CurrentUserName</h5>
+            <h5 class="center-align">@(name.FirstName + " " + name.LastName)</h5>
             <div class="row">
                 <div class="col s12">
-                    <div class="card-image col s6 m2 offset-m5">
+                    <div class="card-image col s6 m2 offset-m5 offset-s3">
                         @switch (userHouse)
                         {
                             case ("Gryffindor"):
@@ -38,7 +48,7 @@
             </div>
 
             <div class="row">
-                <h5 class="center-align">Student Information</h5>
+                <h5 class="center-align">Information</h5>
             </div>
             <div class="row">
                 <div class="col s12 m5 offset-m1">
@@ -59,7 +69,13 @@
                     </div>
                     <div class="row">
                         <div class="col s12">
-                            None so far
+                            @spells.Spell1
+                        </div>
+                        <div class="col s12">
+                            @spells.Spell2
+                        </div>
+                        <div class="col s12">
+                            @spells.Spell3
                         </div>
                     </div>
                 </div>
