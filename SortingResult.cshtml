@@ -4,8 +4,7 @@
 
     if (!WebSecurity.IsAuthenticated)
     {
-        Response.Redirect("~/Login"
-            + Request.Url.LocalPath);
+        Response.Redirect("~/Login");
     }
 
     Database db = Database.Open("Startersite");

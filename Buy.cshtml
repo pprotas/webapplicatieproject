@@ -1,0 +1,26 @@
+﻿@{
+    Page.Title = "Title goes here";
+    //Layout = "Your Layout Page goes here";\
+
+    Database db = Database.Open("StarterSite");
+    var ProductId = UrlData[0];
+    var item = Request["item"];
+    int jellybeans = Convert.ToInt32(Request["jellybeans"]);
+
+    var user = db.QuerySingle("SELECT * FROM StudentInformation WHERE UserId = @0", WebSecurity.CurrentUserId);
+    var soldItem = db.QuerySingle("SELECT * FROM ItemsForSale WHERE Item = @0", item);
+    var seller = db.QuerySingle("SELECT * FROM StudentInformation WHERE UserId = @0", soldItem.UserId);
+    int userJellybeans = Convert.ToInt32(user.Jellybeans);
+    if (IsPost)
+    {
+        db.Execute("DELETE FROM ItemsForSale WHERE ItemId = @0", ProductId);
+        db.Execute("UPDATE StudentInformation SET Jellybeans = @0", userJellybeans - jellybeans);
+        db.Execute("UPDATE Bag Set Item4 = @0 WHERE BagId = @1", item, WebSecurity.CurrentUserId);
+        db.Execute("UPDATE StudentInformation SET Jellybeans = @0 WHERE UserId = @1", seller.Jellybeans + jellybeans, seller.UserId);
+        Response.Redirect("~/Forum");
+    }
+}
+
+<div>
+
+</div>

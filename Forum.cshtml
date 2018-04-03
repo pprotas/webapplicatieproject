@@ -4,8 +4,7 @@
 
     if (!WebSecurity.IsAuthenticated)
     {
-        Response.Redirect("~/Login"
-            + Request.Url.LocalPath);
+        Response.Redirect("~/Login");
     }
 
     Database db = Database.Open("StarterSite");
@@ -14,6 +13,29 @@
     var classes = db.Query("SELECT Class, Teacher, LastEdited FROM Homework WHERE Class = @0 OR Class = @1 OR Class = @2 OR Class = @3 OR Class = @4 OR Class = @5 OR Class = @6",
         userClasses.Class1, userClasses.Class2, userClasses.Class3, userClasses.Class4, userClasses.Class5, userClasses.Class6, userClasses.Class7);
     var discussion = db.Query("SELECT DiscussionName, UserName, LastEdited FROM Discussion WHERE FirstPost = 1");
+    var itemsForSale = db.Query("SELECT * FROM ItemsForSale");
+    var userBag = db.QuerySingle("SELECT * FROM Bag WHERE BagId = @0", WebSecurity.CurrentUserId);
+    var item1 = userBag.Item1;
+    var item2 = userBag.Item2;
+    var item3 = userBag.Item3;
+    var item4 = userBag.Item4;
+    var item5 = userBag.Item5;
+    var nameStrings = db.QuerySingle("SELECT FirstName, LastName FROM UserProfile WHERE UserId = @0", WebSecurity.CurrentUserId);
+    string name = nameStrings.FirstName + " " + nameStrings.LastName;
+    if (IsPost)
+    {
+        var item = Request["item"];
+        var jellybeans = Request["jellybeans"];
+
+        db.Execute("INSERT INTO ItemsForSale (Item, Jellybeans, UserId, UserName) VALUES (@0, @1, @2, @3)", item, jellybeans, WebSecurity.CurrentUserId, name);
+        userBag = db.QuerySingle("SELECT * FROM Bag WHERE BagId = @0", WebSecurity.CurrentUserId);
+        db.Execute("UPDATE Bag SET Item1 = NULL WHERE BagId = @0 AND Item1 = @1", WebSecurity.CurrentUserId, item);
+        db.Execute("UPDATE Bag SET Item2 = NULL WHERE BagId = @0 AND Item2 = @1", WebSecurity.CurrentUserId, item);
+        db.Execute("UPDATE Bag SET Item3 = NULL WHERE BagId = @0 AND Item3 = @1", WebSecurity.CurrentUserId, item);
+        db.Execute("UPDATE Bag SET Item4 = NULL WHERE BagId = @0 AND Item4 = @1", WebSecurity.CurrentUserId, item);
+        db.Execute("UPDATE Bag SET Item5 = NULL WHERE BagId = @0 AND Item5 = @1", WebSecurity.CurrentUserId, item);
+        Response.Redirect("~/Forum");
+    }
 
 }
 
@@ -142,10 +164,6 @@
         </div>
     </div>
 </div>
-
-
-
-
 <div>
     <div class="row">
         <div class="col s1 m2"></div>
@@ -153,10 +171,24 @@
     </div>
     <div class="row">
         <div class="container">
-            <select>
-
-            </select>
-            <a class="btn waves-effect light black">Sell</a>
+            <form method="post">
+                <div class="row">
+                    <div class="col s3">
+                        <select name="item" class="browser-default">
+                            <option value=@item1>@item1</option>
+                            <option value=@item2>@item2</option>
+                            <option value=@item3>@item3</option>
+                            <option value=@item4>@item4</option>
+                            <option value=@item5>@item5</option>
+                        </select>
+                    </div>
+                    <div class="col s3">
+                        <input placeholder="Jellybeans" name="jellybeans" id="jellybeans" type="text" class="validate">
+                        <label for="jellybeans">Jellybeans</label>
+                    </div>
+                </div>
+                <input type="submit" class="btn waves-effect light black" value="Sell" />
+            </form>
         </div>
     </div>
     <div class="row">
@@ -173,11 +205,17 @@
                     </thead>
 
                     <tbody>
-                        <tr>
-                            <td class="col m5"></td>
-                            <td class="col m3">H. Potter</td>
-                            <td class="col m4" style="text-align:right">11:54 21-03-2018</td>
-                        </tr>
+                        @foreach (var item in itemsForSale)
+                        {
+                            <tr>
+                                <th class="col m5">@item.Item</th>
+                                <th class="col m3">@item.UserName</th>
+                                <th class="col m4" style="text-align:right">@(item.Jellybeans) Jellybeans <form action=@Href("Buy", item.ItemId) method="post"><input type="submit" value="BUY" class="btn black light" /> @Html.Hidden("item", item.Item) @Html.Hidden("jellybeans", item.Jellybeans)</form></th>
+                            </tr>
+                            <tr>
+                                <th><div class="divider"></div></th>
+                            </tr>
+                        }
                     </tbody>
                 </table>
             </div>
