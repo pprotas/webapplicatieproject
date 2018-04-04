@@ -13,6 +13,10 @@
     int userJellybeans = Convert.ToInt32(user.Jellybeans);
     if (IsPost)
     {
+        if(userJellybeans <= jellybeans)
+        {
+            Response.Redirect("~/Forum");
+        }
         db.Execute("DELETE FROM ItemsForSale WHERE ItemId = @0", ProductId);
         db.Execute("UPDATE StudentInformation SET Jellybeans = @0", userJellybeans - jellybeans);
         db.Execute("UPDATE Bag Set Item4 = @0 WHERE BagId = @1", item, WebSecurity.CurrentUserId);
