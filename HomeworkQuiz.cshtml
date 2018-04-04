@@ -4,24 +4,77 @@
 
     if (!WebSecurity.IsAuthenticated)
     {
-        Response.Redirect("~/Login"
-            + Request.Url.LocalPath);
+        Response.Redirect("~/Login");
     }
+
+    if (Request.QueryString == null)
+    {
+        Response.Redirect("~/Forum");
+    }
+
+    int x = 1;
+
+    Database db = Database.Open("StarterSite");
 
     if (IsPost)
     {
-        Database db = Database.Open("StarterSite");
+        int points = 0;
+        for (int i=0; i<5; i++)
+        {
+            var questionId = Request.Form["q" + (i + 1) + "id"];
+            var rightAnswer = db.QuerySingle("SELECT RightAnswer FROM HomeworkQuiz WHERE QuestionId = @0", questionId);
+
+            var userAnswer = Request.Form["group" + (i + 1)];
+
+            if(userAnswer == rightAnswer.rightAnswer)
+            {
+                points += 1;
+            }
+        }
+
         var pointsAndJellybeans = db.QuerySingle("SELECT Points, Jellybeans FROM StudentInformation WHERE UserId = @0", WebSecurity.CurrentUserId);
-        db.Execute("UPDATE StudentInformation SET Points = @0, Jellybeans = @1 WHERE UserId = @2", pointsAndJellybeans.Points + 10, pointsAndJellybeans.Jellybeans + 25, WebSecurity.CurrentUserId);
+        db.Execute("UPDATE StudentInformation SET Points = @0, Jellybeans = @1 WHERE UserId = @2", pointsAndJellybeans.Points + (points*10), pointsAndJellybeans.Jellybeans + (points*20), WebSecurity.CurrentUserId);
+        Response.Redirect("~/HomeworkQuizResult?class=" + Request.QueryString["class"] + "&points=" + points);
+    }
+
+    int cnt = db.QueryValue("SELECT Count(*) FROM HomeworkQuiz WHERE Class = @0", Request.QueryString["class"]);
+    if (cnt == 0)
+    {
         Response.Redirect("~/Forum");
     }
+
+    var quiz = db.Query("SELECT * FROM HomeworkQuiz WHERE Class = @0", Request.QueryString["class"]);
 }
 
 <div class="row">
     <form method="post">
-        @RenderPage("~/HomeworkVragen/_HomeworkVraag1.cshtml")
-        @RenderPage("~/HomeworkVragen/_HomeworkVraag2.cshtml")
-        @RenderPage("~/HomeworkVragen/_HomeworkVraag3.cshtml")
-        <input type="submit" class="btn waves-effect light black" value="Submit"/>
+        @foreach (var q in quiz)
+        {
+            <input type="hidden" name="q@(x)id" value="@q.QuestionId" />
+            <h5>Question @x</h5>
+            <hr />
+            <p class="light">
+                @q.Question
+            </p>
+            <p>
+                <input class="with-gap" name="group@(x)" type="radio" value="a" id="q@(x)a" />
+                <label for="q@(x)a">@q.Answer1</label>
+            </p>
+            <p>
+                <input class="with-gap" name="group@(x)" type="radio" value="b" id="q@(x)b" />
+                <label for="q@(x)b">@q.Answer2</label>
+            </p>
+            <p>
+                <input class="with-gap" name="group@(x)" type="radio" value="c" id="q@(x)c" />
+                <label for="q@(x)c">@q.Answer3</label>
+            </p>
+            <p>
+                <input class="with-gap" name="group@(x)" type="radio" value="d" id="q@(x)d" />
+                <label for="q@(x)d">@q.Answer4</label>
+            </p>
+            <br />
+            x++;
+        }
+        <input type="submit" class="btn waves-effect light black" value="Submit" />
     </form>
 </div>

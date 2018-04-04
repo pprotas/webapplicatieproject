@@ -43,7 +43,7 @@
                 </p>
             </div>
             <div class="card-action center">
-                <a href="~/HomeworkQuiz.cshtml">Make Homework</a>
+                <a href="~/HomeworkQuiz.cshtml?class=@HttpUtility.UrlEncode(Request.QueryString["class"])">Make Homework</a>
             </div>
         </div>
     </div>

@@ -1,5 +1,5 @@
 ﻿@{
-    Page.Title = "New Homework";
+    Page.Title = "New Homework" + Request.QueryString["class"];
     Layout = "~/Shared/_SiteLayout.cshtml";
 
     if (!Roles.IsUserInRole("teacher"))
@@ -15,6 +15,26 @@
         Database db = Database.Open("StarterSite");
         var name = db.QuerySingle("SELECT FirstName, LastName FROM UserProfile WHERE UserId = @0", WebSecurity.CurrentUserId);
         db.Execute("INSERT INTO Homework (Year, Class, Teacher, HomeworkDescription, LastEdited) VALUES (@0, @1, @2, @3, @4)", 1, clas, name.FirstName + " " + name.LastName, description, DateTime.Now);
+
+        int cnt = db.QueryValue("SELECT Count(Question) FROM HomeworkQuiz WHERE Class = @0", clas);
+        if(cnt != 0)
+        {
+            db.Execute("DELETE FROM HomeworkQuiz WHERE Class= @0", clas);
+        }
+
+        for(int i=0; i<5; i++)
+        {
+            var question = Request.Form["question" + (i+1)];
+            var answerA = Request.Form["answer" + (i + 1) + "a"];
+            var answerB = Request.Form["answer" + (i + 1) + "b"];
+            var answerC = Request.Form["answer" + (i + 1) + "c"];
+            var answerD = Request.Form["answer" + (i + 1) + "d"];
+            var rightAnswer = Request.Form["rightAnswerq" + (i + 1)];
+
+            db.Execute("INSERT INTO HomeworkQuiz (Class, Question, Answer1, Answer2, Answer3, Answer4, RightAnswer) VALUES (@0, @1, @2, @3, @4, @5, @6)",
+                clas, question, answerA, answerB, answerC, answerD, rightAnswer);
+        }
+
         Response.Redirect("~/Forum");
     }
 }
@@ -40,6 +60,11 @@
                             <label for="textarea1">Description</label>
                         </div>
                     </div>
+                    @RenderPage("~/HomeworkVragen/_InsertVraag1.cshtml")
+                    @RenderPage("~/HomeworkVragen/_InsertVraag2.cshtml")
+                    @RenderPage("~/HomeworkVragen/_InsertVraag3.cshtml")
+                    @RenderPage("~/HomeworkVragen/_InsertVraag4.cshtml")
+                    @RenderPage("~/HomeworkVragen/_InsertVraag5.cshtml")
                     <div class="row">
                         <input type="submit" class="btn black light waves-effect" value="Finished" />
                     </div>
