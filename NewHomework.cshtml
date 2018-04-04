@@ -4,8 +4,7 @@
 
     if (!Roles.IsUserInRole("teacher"))
     {
-        Response.Redirect("~/Forum"
-            + Request.Url.LocalPath);
+        Response.Redirect("~/Forum");
     }
 
     if (IsPost)

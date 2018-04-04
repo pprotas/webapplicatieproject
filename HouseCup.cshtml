@@ -1,0 +1,91 @@
+﻿@{
+    Page.Title = "Housecup";
+    Layout = "~/Shared/_SiteLayout.cshtml";
+
+    if (!Roles.IsUserInRole("teacher"))
+    {
+        Response.Redirect("~/Home");
+    }
+
+    string winnerHouse = "";
+
+    Database db = Database.Open("StarterSite");
+
+    if (IsPost)
+    {
+        string gryff = "Gryffindor";
+        var gryffUsers = db.Query("SELECT UserId FROM UserProfile WHERE House = @0", gryff);
+        int gryffPoints = 0;
+        foreach (var gryffUser in gryffUsers)
+        {
+            gryffPoints += db.QueryValue("SELECT Points FROM StudentInformation WHERE UserId = @0", gryffUser.UserId);
+        }
+
+        string slyth = "Slytherin";
+        var slythUsers = db.Query("SELECT UserId FROM UserProfile WHERE House = @0", slyth);
+        int slythPoints = 0;
+        foreach (var slythUser in slythUsers)
+        {
+            slythPoints += db.QueryValue("SELECT Points FROM StudentInformation WHERE UserId = @0", slythUser.UserId);
+        }
+
+        string huff = "Hufflepuff";
+        var huffUsers = db.Query("SELECT UserId FROM UserProfile WHERE House = @0", huff);
+        int huffPoints = 0;
+        foreach (var huffUser in huffUsers)
+        {
+            huffPoints += db.QueryValue("SELECT Points FROM StudentInformation WHERE UserId = @0", huffUser.UserId);
+        }
+
+        string raven = "Ravenclaw";
+        var ravenUsers = db.Query("SELECT UserId FROM UserProfile WHERE House = @0", raven);
+        int ravenPoints = 0;
+        foreach (var ravenUser in ravenUsers)
+        {
+            ravenPoints += db.QueryValue("SELECT Points FROM StudentInformation WHERE UserId = @0", ravenUser.UserId);
+        }
+
+        int highestValue = Math.Max(gryffPoints, Math.Max(slythPoints, Math.Max(huffPoints, ravenPoints)));
+
+        if (gryffPoints == highestValue)
+        {
+            winnerHouse = "Gryffindor";
+        }
+        else if (slythPoints == highestValue)
+        {
+            winnerHouse = "Slytherin";
+        }
+        else if (huffPoints == highestValue)
+        {
+            winnerHouse = "Hufflepuff";
+        }
+        else if (ravenPoints == highestValue)
+        {
+            winnerHouse = "RavenClaw";
+        }
+
+        string dumble = "Professor Dumbledore";
+        string title = "Housecup Winner";
+        string content = winnerHouse + " has won the Housecup!";
+        db.Execute("INSERT INTO Discussion(UserName, DiscussionName, CommentContent, LastEdited, Firstpost)" +
+            "VALUES(@0, @1, @2, @3, 1)", dumble, title, content, DateTime.Now);
+
+        db.Execute("UPDATE StudentInformation SET Points = 0");
+
+        var winnerUsers = db.Query("SELECT UserId FROM UserProfile WHERE House = @0", winnerHouse);
+        foreach (var winnerUser in winnerUsers)
+        {
+            var jellybeans = db.QuerySingle("SELECT Jellybeans FROM StudentInformation WHERE UserId = @0", winnerUser.UserId);
+            db.Execute("UPDATE StudentInformation SET Jellybeans = @0 WHERE UserId = @1", jellybeans.Jellybeans + 500, winnerUser.UserId);
+        }
+
+        Response.Redirect("~/Forum");
+    }
+}
+    <br />
+
+    <div class="row">
+        <form class="col m8 offset-m2" method="post">
+            <button class="btn waves-effect">Housecup!</button>
+        </form>
+    </div>
