@@ -10,6 +10,7 @@
     var user = db.QuerySingle("SELECT * FROM StudentInformation WHERE UserId = @0", WebSecurity.CurrentUserId);
     var soldItem = db.QuerySingle("SELECT * FROM ItemsForSale WHERE Item = @0", item);
     var seller = db.QuerySingle("SELECT * FROM StudentInformation WHERE UserId = @0", soldItem.UserId);
+    var bag = db.QuerySingle("SELECT * FROM Bag WHERE BagId = @0", WebSecurity.CurrentUserId);
     int userJellybeans = Convert.ToInt32(user.Jellybeans);
     if (IsPost)
     {
@@ -19,7 +20,26 @@
         }
         db.Execute("DELETE FROM ItemsForSale WHERE ItemId = @0", ProductId);
         db.Execute("UPDATE StudentInformation SET Jellybeans = @0", userJellybeans - jellybeans);
-        db.Execute("UPDATE Bag Set Item4 = @0 WHERE BagId = @1", item, WebSecurity.CurrentUserId);
+        if (bag.Item1 == null)
+        {
+            db.Execute("UPDATE Bag SET Item1 = @0 WHERE BagId = @1", item, WebSecurity.CurrentUserId);
+        }
+        else if (bag.Item2 == null)
+        {
+            db.Execute("UPDATE Bag SET Item2 = @0 WHERE BagId = @1", item, WebSecurity.CurrentUserId);
+        }
+        else if (bag.Item3 == null)
+        {
+            db.Execute("UPDATE Bag SET Item3 = @0 WHERE BagId = @1", item, WebSecurity.CurrentUserId);
+        }
+        else if (bag.Item4 == null)
+        {
+            db.Execute("UPDATE Bag SET Item4 = @0 WHERE BagId = @1", item, WebSecurity.CurrentUserId);
+        }
+        else if (bag.Item5 == null)
+        {
+            db.Execute("UPDATE Bag SET Item5 = @0 WHERE BagId = @1", item, WebSecurity.CurrentUserId);
+        }
         db.Execute("UPDATE StudentInformation SET Jellybeans = @0 WHERE UserId = @1", seller.Jellybeans + jellybeans, seller.UserId);
         Response.Redirect("~/Forum");
     }

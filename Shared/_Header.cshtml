@@ -10,6 +10,7 @@
             <div class="black-text right hide-on-med-and-down">
                 <a class="btn waves-effect black light" href="~/UserProfile">@WebSecurity.CurrentUserName</a>
                 <a class="light btn waves-effect black" href="~/Forum">Forum</a>
+                @if (Roles.IsUserInRole("teacher")) { <a class="btn waves-effect black light" href="~/Housecup">End Housecup</a>}
                 <a class="btn waves-effect black light" href="~/Logout">Log Out</a>
             </div>
             <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
@@ -17,6 +18,7 @@
                 <li><text class="light black-text">Welcome, @WebSecurity.CurrentUserName</text></li>
                 <li><a class="black-text" href="~/UserProfile">Profile</a></li>
                 <li><a class="black-text" href="~/Forum">Forum</a></li>
+                @if (Roles.IsUserInRole("teacher")) { <li><a class="black-text" href="~/Housecup">End Housecup</a></li>}
                 <li><a class="black-text" href="~/Logout">Log Out</a></li>
             </ul>
         }

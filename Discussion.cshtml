@@ -8,18 +8,25 @@
             + Request.Url.LocalPath);
     }
 
-    if (IsPost)
+    if (IsPost && Request.Form["operation"] == "postComment")
     {
         Validation.RequireField("reply");
     }
 
     Database db = Database.Open("StarterSite");
 
-    if(IsPost && Validation.IsValid())
+    var name = db.QuerySingle("SELECT FirstName, LastName FROM UserProfile WHERE UserId = @0", WebSecurity.CurrentUserId);
+
+    if (IsPost && Request.Form["operation"] == "postComment" && Validation.IsValid())
     {
         string reply = Request.Form["reply"];
-        var name = db.QuerySingle("SELECT FirstName, LastName FROM UserProfile WHERE UserId = @0", WebSecurity.CurrentUserId);
         db.Execute("INSERT INTO Discussion(UserName, DiscussionName, CommentContent, LastEdited) VALUES (@0, @1, @2, @3)", name.FirstName + " " + name.LastName, Request.QueryString["discussionname"], reply, DateTime.Now);
+    }
+
+    if(IsPost && Request.Form["operation"] == "deleteComment")
+    {
+        string commentId = Request.Form["commentid"];
+        db.Execute("DELETE FROM Discussion WHERE CommentId = @0", commentId);
     }
 
     var discussion = db.Query("SELECT * FROM Discussion WHERE DiscussionName = @0", Request.QueryString["discussionname"]);
@@ -36,6 +43,14 @@
                         @comment.CommentContent
                     </p>
                     @comment.LastEdited
+                    @if (comment.UserName == name.FirstName + " " + name.LastName)
+                    {
+                        <form method="post">
+                            <input type="hidden" name="operation" value="deleteComment" />
+                            <input type="hidden" name="commentid" value="@comment.CommentId" />
+                            <input type="submit" value="DELETE" class="btn black light" />
+                        </form>
+                    }
                 </div>
             </div>
         </div>
@@ -44,6 +59,7 @@
 
 <div class="row">
     <form class="col s12" method="post">
+        <input type="hidden" name="operation" value="postComment" />
         <div class="row">
             <div class="input-field col s12 m8 offset-m2">
                 <textarea id="textarea1" class="materialize-textarea" name="reply"></textarea>
