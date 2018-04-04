@@ -3,7 +3,7 @@
     Layout = "~/Shared/_SiteLayout.cshtml";
 }
 
-@if (WebSecurity.IsAuthenticated)
+@if (!WebSecurity.IsAuthenticated)
 {
     <div id="index-banner" class="parallax-container">
         <div class="section no-pad-bot">
@@ -11,10 +11,10 @@
                 <br><br>
                 <h1 class="header center">Welcome to Hogwarts.</h1>
                 <div class="row center">
-                    <h5 class="header col s12 light">Your journey has begun.</h5>
+                    <h5 class="header col s12 light">Your journey will begin soon.</h5>
                 </div>
                 <div class="row center">
-                    <a href="~/Forum" id="download-button" class="btn-large waves-effect waves-light materialize-red">Visit the forum</a>
+                    <a href="~/Register" id="download-button" class="btn-large waves-effect waves-light materialize-red">Enroll</a>
                 </div>
                 <br><br>
 
@@ -106,10 +106,10 @@ else
                 <br><br>
                 <h1 class="header center">Welcome to Hogwarts.</h1>
                 <div class="row center">
-                    <h5 class="header col s12 light">Soon your journey will begin.</h5>
+                    <h5 class="header col s12 light">Your journey has begun.</h5>
                 </div>
                 <div class="row center">
-                    <a href="~/Register" id="download-button" class="btn-large waves-effect waves-light materialize-red">Enroll</a>
+                    <a href="~/Forum" id="download-button" class="btn-large waves-effect waves-light materialize-red">Visit the forum</a>
                 </div>
                 <br><br>
 

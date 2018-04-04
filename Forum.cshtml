@@ -210,7 +210,10 @@
                             <tr>
                                 <th class="col m5">@item.Item</th>
                                 <th class="col m3">@item.UserName</th>
-                                <th class="col m4" style="text-align:right">@(item.Jellybeans) Jellybeans <form action=@Href("Buy", item.ItemId) method="post"><input type="submit" value="BUY" class="btn black light" /> @Html.Hidden("item", item.Item) @Html.Hidden("jellybeans", item.Jellybeans)</form></th>
+                                @if (!(item.UserName == name))
+                                {
+                                    <th class="col m4" style="text-align:right">@(item.Jellybeans) Jellybeans <form action=@Href("Buy", item.ItemId) method="post"><input type="submit" value="BUY" class="btn black light" /> @Html.Hidden("item", item.Item) @Html.Hidden("jellybeans", item.Jellybeans)</form></th>
+                                }
                             </tr>
                             <tr>
                                 <th><div class="divider"></div></th>
