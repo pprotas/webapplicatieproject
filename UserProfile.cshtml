@@ -7,11 +7,16 @@
         Response.Redirect("~/Login");
     }
 
+
     Database db = Database.Open("StarterSite");
 
     var name = db.QuerySingle("SELECT FirstName, LastName FROM UserProfile WHERE UserId = @0", WebSecurity.CurrentUserId);
 
     var house = db.QuerySingle("SELECT House FROM UserProfile WHERE UserId = @0", WebSecurity.CurrentUserId);
+    if(house.House == null)
+    {
+        Response.Redirect("~/SortingQuiz");
+    }
     var jellybeans = db.QuerySingle("SELECT Jellybeans FROM StudentInformation WHERE UserId = @0", WebSecurity.CurrentUserId);
     var points = db.QuerySingle("SELECT Points FROM StudentInformation WHERE UserId = @0", WebSecurity.CurrentUserId);
     var classes = db.QuerySingle("SELECT Class1, Class2, Class3, Class4, Class5, Class6, Class7 FROM Classes WHERE ClassesId = @0", WebSecurity.CurrentUserId);
@@ -123,7 +128,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col s12">
+                <div class="col s12 m5 offset-m1">
                     <div class="row">
                         <div class="col s12">
                             <b>Bag:</b>

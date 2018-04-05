@@ -9,9 +9,14 @@
 
     Database db = Database.Open("StarterSite");
 
+    var house = db.QuerySingle("SELECT House FROM UserProfile WHERE UserId = @0", WebSecurity.CurrentUserId);
+    if (house.House == null)
+    {
+        Response.Redirect("~/SortingQuiz");
+    }
     var userClasses = db.QuerySingle("SELECT Class1, Class2, Class3, Class4, Class5, Class6, Class7 FROM Classes WHERE ClassesId = @0", WebSecurity.CurrentUserId);
     var classes = db.Query("SELECT HomeworkId, Class, Teacher, LastEdited FROM Homework WHERE Class = @0 OR Class = @1 OR Class = @2 OR Class = @3 OR Class = @4 OR Class = @5 OR Class = @6",
-        userClasses.Class1, userClasses.Class2, userClasses.Class3, userClasses.Class4, userClasses.Class5, userClasses.Class6, userClasses.Class7);
+userClasses.Class1, userClasses.Class2, userClasses.Class3, userClasses.Class4, userClasses.Class5, userClasses.Class6, userClasses.Class7);
     var discussion = db.Query("SELECT CommentId, DiscussionName, UserName, LastEdited FROM Discussion WHERE FirstPost = 1");
     var itemsForSale = db.Query("SELECT * FROM ItemsForSale");
     var userBag = db.QuerySingle("SELECT * FROM Bag WHERE BagId = @0", WebSecurity.CurrentUserId);
